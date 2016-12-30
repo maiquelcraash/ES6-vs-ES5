@@ -48,3 +48,38 @@
 	console.log(y.x); 												//12
 	console.log(y.y); 												//13
 }
+
+
+/* Object.assign(target, ...sources) ->  is used to copy the values of all enumerable own properties from one or more
+ source objects to a target object.
+
+ • It invokes getters on the sources and setters on the target.
+ • It just assigns values of the properties of source to the new or existing properties of target.
+ • It doesn't copy the [[prototype]] property of sources.
+ • JavaScript property names can be strings or symbols. Object.assign() copies both.
+ • Property definitions are not copied from sources therefore you need to use Object.getOwnPropertyDescriptor()Object.defineProperty() instead.
+ • It ignores copying keys with null and undefined values.
+
+ */
+{
+	console.log("\n##Object.assign():");
+	let x = {x: 12};
+	let y = {y: 13, __proto__: x};									//define de prototype as the x object
+	let z = {
+		z: 14,
+		get b() {
+			return 2;
+		},
+		q: {}
+	};
+	Object.defineProperty(z, "z", {enumerable: false});				//set z property as non-enumerable
+	let m = {};
+
+	Object.assign(m, y, z);
+	console.log(m.y);												//13
+	console.log(m.z);												//undefined -> do not copy non-enumerable properties
+	console.log(m.b);												//2 -> obtained by the get function inner z
+	console.log(m.x);												//undefined -> do not copy the prototype of x
+	console.log(m.q == z.q);										//true
+	console.log(m);													//{ y: 13, b: 2, q: {} }
+}
